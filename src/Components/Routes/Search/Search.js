@@ -20,7 +20,7 @@ const Input = styled.input`
 `;
 const Results = styled.div``;
 const NotFound = styled.span``;
-const Search = ({}) => {
+const Search = () => {
     const {form, movieResults, tvResults, keyword, loading, error} = useSearch();
     return(
         <Container>

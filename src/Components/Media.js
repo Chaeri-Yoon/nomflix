@@ -43,6 +43,7 @@ const Year = styled.span`
     font-size: 10px;
     color: rgba(255,255,255,0.5);
 `;
+
 const Media = ({id, imgUrl, title, year, rating, isMovie = false}) => {
     return(
         <Link to={{

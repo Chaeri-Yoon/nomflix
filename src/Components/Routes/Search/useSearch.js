@@ -27,10 +27,10 @@ const useSearch = () => {
             setError(true);
         }finally{
             setLoading(false);
-            //setKeyword(event.target[0].value);
         }
     }
     useEffect(() => {
+        console.log(form.current)
         if(form.current){
             form.current.addEventListener("submit", searchWithKeyword);
         }

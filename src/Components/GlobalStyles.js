@@ -8,6 +8,9 @@ const globalStyles = createGlobalStyle`
         text-decoration:none;
         color:inherit;
     }
+    button:hover{
+        cursor: pointer;
+    }
     *{
         box-sizing:border-box;
     }
@@ -16,7 +19,7 @@ const globalStyles = createGlobalStyle`
         font-size:12px;
         background-color: ${bodyColor};
         color:white;
-        padding-top:50px;
+        padding: 50px 0;
     }
 `;
 
