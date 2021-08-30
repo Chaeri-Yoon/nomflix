@@ -122,7 +122,7 @@ const AdditionalInfo = ({videos, companies, countries, seasons}) => {
     let countriesText = "";
     if(countries.length > 0){
         for(let i = 0; i < countries.length; i++){
-            if(i < countries.length - 1)    countriesText += `${countries[i].name} | `;
+            if(i < countries.length - 1)    countriesText += `${countries[i].name}, `;
             else countriesText += `${countries[i].name}`;
         }
     }
