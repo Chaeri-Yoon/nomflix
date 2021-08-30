@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import useAdditionalInfoShow from "./useAdditionalInfoShow";
+import useDisplayAdditionalInfo from "./useDisplayAdditionalInfo";
 
 const Container = styled.div``;
 const Tabs = styled.ul`
@@ -21,7 +21,7 @@ const Button = styled.button`
 `;
 const Information = styled.div``;
 const VideoContainer = styled.div`
-    margin-top: 20px;
+    margin: 20px 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, 240px);
 
@@ -35,6 +35,8 @@ const Video = styled.iframe`
 const ProductionContainer = styled.div`
     width: 100%;
     display: flex;
+
+    margin-bottom: 20px;
 `;
 const Production = styled.div`
     display: flex;
@@ -73,16 +75,54 @@ const CompanyName = styled.span`
     margin-bottom: 5px;
     text-align: center;
 `;
+const SeasonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
 
-const AdditionalInfoContainer = ({videos, companies, countries}) => {
-    const {videoButton, productionButton, showVideo, showProduction} = useAdditionalInfoShow();
+    margin-bottom: 20px;
+`;
+const TotalSeason = styled.span`
+    margin-bottom: 10px;
+`;
+const SeasonDetail = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+
+    grid-gap: 30px;
+`;
+const Season = styled.div`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+const Poster = styled.image`
+    width: 100%;
+    height: 180px;
+    background-image: url(${props => props.imgUrl});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    margin-bottom: 5px;
+`;
+const SeasonNumber = styled.span`
+    transform: scale(0.7);
+    opacity: 0.7;
+`;
+
+const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
+    const {videoButton, productionButton, seasonButton, showVideo, showProduction, showSeason} = useDisplayAdditionalInfo();
     
     videos = videos && videos.filter((video, index) => index < 2);
+    // The first element of seasons array is 'Special'
+    seasons = seasons && seasons.length > 0 && seasons.filter((season, index) => index > 0);
     let countriesText = "";
     if(countries.length > 0){
         for(let i = 0; i < countries.length; i++){
-            if(i < countries.length - 1)    countriesText += `${countries[i].iso_3166_1} | `;
-            else countriesText += `${countries[i].iso_3166_1}`;
+            if(i < countries.length - 1)    countriesText += `${countries[i].name} | `;
+            else countriesText += `${countries[i].name}`;
         }
     }
     return (
@@ -96,6 +136,10 @@ const AdditionalInfoContainer = ({videos, companies, countries}) => {
                     {
                         companies.length > 0 &&
                         <Tab><Button ref={productionButton}>Production</Button></Tab>
+                    }
+                    {
+                        seasons && seasons.length > 0 &&
+                        <Tab><Button ref={seasonButton}>Seasons</Button></Tab>
                     }
                 </Tabs>
                 <Information>
@@ -133,6 +177,22 @@ const AdditionalInfoContainer = ({videos, companies, countries}) => {
                                             </Production>
                                         }
                                     </ProductionContainer>
+                }
+                {showSeason && <SeasonContainer>
+                                    <TotalSeason>{`${seasons.length} ${seasons.length > 1 ? "Seasons" : "Season"} in Total`}</TotalSeason>
+                                    <SeasonDetail>
+                                        {seasons.length > 0 && seasons.map(
+                                            (season, index) => <Season>
+                                                                    <Poster imgUrl={
+                                                                        season.poster_path
+                                                                        ? `https://image.tmdb.org/t/p/w300/${season.poster_path}`
+                                                                        : "https://img.icons8.com/ios/50/000000/popcorn-time.png"
+                                                                    }/>
+                                                                    <SeasonNumber>{`Season ${season.season_number}`}</SeasonNumber>
+                                                                </Season>
+                                        )}
+                                    </SeasonDetail>
+                                </SeasonContainer>
                 }
                 </Information>
             </Container>

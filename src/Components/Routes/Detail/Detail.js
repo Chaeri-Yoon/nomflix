@@ -9,6 +9,7 @@ const Container = styled.div`
     width: 100%;
     position: relative;
     padding: 50px;
+    padding-top: 30px;
 `;
 const Backdrop = styled.div`
     position: absolute;
@@ -129,10 +130,14 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
                                     )}
                                 </Genres>
                                 <Imdb>
-                                    <a href={`https://imdb.com/title/${mediaData.imdbID}`} target="_blank">
-                                        <i className="fab fa-imdb"></i> 
-                                    </a>
-                                    <span> · </span>
+                                    {mediaData.imdbID &&
+                                        <>
+                                            <a href={`https://imdb.com/title/${mediaData.imdbID}`} target="_blank">
+                                                <i className="fab fa-imdb"></i> 
+                                            </a>
+                                            <span> · </span>
+                                        </>
+                                    }
                                 </Imdb> 
                                 <Rating>
                                     {stars.map((star, index) => <span key={index}>{star}</span>)}
@@ -142,6 +147,7 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
                             <AdditionalInfoContainer videos={mediaData.videos.results}
                                                     companies={mediaData.production_companies}
                                                     countries={mediaData.production_countries}
+                                                    seasons={mediaData.seasons}
                             />
                         </Information>
                     </Content>
