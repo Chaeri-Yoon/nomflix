@@ -1,8 +1,11 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 
 import useDetail from "./useDetail";
 import Loader from "../../Loader";
-import AdditionalInfoContainer from "./AdditionalInfoContainer";
+import AdditionalInfo from "./AdditionalInfo";
+import TypeChecker from "../../TypeChecker";
 
 const Container = styled.div`
     height: calc(100vh - 50px);
@@ -77,11 +80,8 @@ const Description = styled.span`
 `;
 const Detail = ({match: {params: {id}}, location: {pathname}}) => {
     const isMovie = pathname.includes("/movie/");
-    const {
-        mediaData, 
-        loading, 
-        error
-    } = useDetail(id, isMovie);
+    const {mediaData, loading, error} = useDetail(id, isMovie);
+    TypeChecker({mediaData, loading, error}, propTypes);
 
     const numOfStars = mediaData && mediaData.vote_average && Math.floor(mediaData.vote_average / 2);
     let stars = [];
@@ -91,13 +91,25 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
     }
 
     return(
-        loading
-        ? <Loader/>
+        loading ? (
+            <>
+              <Helmet>
+                <title>Loading | Nomflix</title>
+              </Helmet>
+              <Loader />
+            </>
+          )
         : (
             error
             ? "Can't get data"
             : (
                 <Container>
+                    <Helmet>
+                        <title>
+                            {mediaData.original_title ? mediaData.original_title : mediaData.original_name}{" "}
+                            | Nomflix
+                        </title>
+                    </Helmet>
                     <Backdrop bgUrl={mediaData.backdrop_path 
                                     ? `https://image.tmdb.org/t/p/original${mediaData.backdrop_path}`
                                     : null}/> 
@@ -119,7 +131,7 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
                                     {
                                         isMovie
                                         ? `${mediaData.runtime}mins · `
-                                        : `${mediaData.episode_run_time}mins · `
+                                        : `${mediaData.episode_run_time[0]}mins · `
                                     }
                                 </Runtime>
                                 <Genres>
@@ -144,7 +156,7 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
                                 </Rating>
                             </ItemContainer>
                             <Description>{mediaData.overview}</Description>
-                            <AdditionalInfoContainer videos={mediaData.videos.results}
+                            <AdditionalInfo videos={mediaData.videos.results}
                                                     companies={mediaData.production_companies}
                                                     countries={mediaData.production_countries}
                                                     seasons={mediaData.seasons}
@@ -156,4 +168,27 @@ const Detail = ({match: {params: {id}}, location: {pathname}}) => {
         )
     )
 }
+const propTypes = {
+    mediaData: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        backdrop_path: PropTypes.string,
+        poster_path: PropTypes.string,
+        original_title: PropTypes.string,
+        original_name: PropTypes.string,
+        release_date: PropTypes.string,
+        first_air_date: PropTypes.string,
+        runtime: PropTypes.number,
+        episode_run_time: PropTypes.arrayOf(PropTypes.number),
+        vote_average: PropTypes.number,
+        genres: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string
+            })
+        ),
+        imdbID: PropTypes.string,
+        overview: PropTypes.string
+    }),
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.bool.isRequired
+};
 export default Detail;

@@ -30,7 +30,6 @@ const useSearch = () => {
         }
     }
     useEffect(() => {
-        console.log(form.current)
         if(form.current){
             form.current.addEventListener("submit", searchWithKeyword);
         }

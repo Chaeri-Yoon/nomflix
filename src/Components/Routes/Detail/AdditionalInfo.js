@@ -1,4 +1,7 @@
 import styled from "styled-components"
+import PropTypes from "prop-types";
+
+import TypeChecker from "../../TypeChecker";
 import useDisplayAdditionalInfo from "./useDisplayAdditionalInfo";
 
 const Container = styled.div``;
@@ -97,7 +100,7 @@ const Season = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-const Poster = styled.image`
+const Poster = styled.div`
     width: 100%;
     height: 180px;
     background-image: url(${props => props.imgUrl});
@@ -112,12 +115,10 @@ const SeasonNumber = styled.span`
     opacity: 0.7;
 `;
 
-const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
+const AdditionalInfo = ({videos, companies, countries, seasons}) => {
     const {videoButton, productionButton, seasonButton, showVideo, showProduction, showSeason} = useDisplayAdditionalInfo();
-    
+
     videos = videos && videos.filter((video, index) => index < 2);
-    // The first element of seasons array is 'Special'
-    seasons = seasons && seasons.length > 0 && seasons.filter((season, index) => index > 0);
     let countriesText = "";
     if(countries.length > 0){
         for(let i = 0; i < countries.length; i++){
@@ -125,6 +126,7 @@ const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
             else countriesText += `${countries[i].name}`;
         }
     }
+    TypeChecker({videos, companies, countries, seasons}, propTypes);
     return (
         <>
             <Container>
@@ -162,7 +164,7 @@ const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
                                                     {
                                                         companies.length > 0 && companies.map(
                                                             (company, index) => (
-                                                                <Company>
+                                                                <Company key={index}>
                                                                     <Logo logoUrl={company.logo_path
                                                                                         ? `https://image.tmdb.org/t/p/original${company.logo_path}`
                                                                                         : null
@@ -182,13 +184,13 @@ const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
                                     <TotalSeason>{`${seasons.length} ${seasons.length > 1 ? "Seasons" : "Season"} in Total`}</TotalSeason>
                                     <SeasonDetail>
                                         {seasons.length > 0 && seasons.map(
-                                            (season, index) => <Season>
+                                            (season, index) => <Season key={index}>
                                                                     <Poster imgUrl={
                                                                         season.poster_path
                                                                         ? `https://image.tmdb.org/t/p/w300/${season.poster_path}`
                                                                         : "https://img.icons8.com/ios/50/000000/popcorn-time.png"
                                                                     }/>
-                                                                    <SeasonNumber>{`Season ${season.season_number}`}</SeasonNumber>
+                                                                    <SeasonNumber>{season.name}</SeasonNumber>
                                                                 </Season>
                                         )}
                                     </SeasonDetail>
@@ -199,4 +201,32 @@ const AdditionalInfoContainer = ({videos, companies, countries, seasons}) => {
         </>
     )
 }
-export default AdditionalInfoContainer;
+const propTypes = {
+    videos: PropTypes.arrayOf(
+        PropTypes.shape({
+            key: PropTypes.string.isRequired
+        })
+    ),
+    companies: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            poster_path: PropTypes.string,
+            original_title: PropTypes.string,
+            release_date: PropTypes.string,
+            vote_average: PropTypes.number
+        })
+    ),
+    countries: PropTypes.arrayOf(
+        PropTypes.shape({
+            logo_path: PropTypes.string,
+            name: PropTypes.string.isRequired
+        })
+    ),
+    seasons: PropTypes.arrayOf(
+        PropTypes.shape({
+            poster_path: PropTypes.string,
+            name: PropTypes.string.isRequired
+        })
+    )
+};
+export default AdditionalInfo;
