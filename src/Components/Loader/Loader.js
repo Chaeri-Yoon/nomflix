@@ -5,6 +5,7 @@ const Loading = styled.span`
     font-size: 50px;
 
     width: 100%;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
 `;

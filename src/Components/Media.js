@@ -45,19 +45,21 @@ const Year = styled.span`
 `;
 const Media = ({id, imgUrl, title, year, rating, isMovie = false}) => {
     return(
-        <Link to={isMovie ? `/movie/${id}` : `/show/${id}`}>
+        <Link to={{
+            pathname: isMovie ? `/movie/${id}` : `/show/${id}`
+            }}>
             <Container>
                 <ImageContainer>
                     <Image bgUrl={
                         imgUrl
                         ? `https://image.tmdb.org/t/p/w300${imgUrl}`
-                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoH0QfMwCLX067AsgAevA1_wfdO5YVoHDPGw&usqp=CAU"
+                        : "https://img.icons8.com/ios/50/000000/popcorn-time.png"
                     }/>
                     <Rating>
                         {`⭐ ${rating}/10`}
                     </Rating>
                 </ImageContainer>
-                <Title>{title}</Title>
+                <Title>{title.length > 18 ? `${title.substring(0, 18)}...` : title}</Title>
                 <Year>{year && year.substring(0, 4)}</Year>
             </Container>
         </Link>

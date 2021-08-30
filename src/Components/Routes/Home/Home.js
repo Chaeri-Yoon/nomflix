@@ -5,6 +5,7 @@ import Section from "../../Section";
 import Loader from "../../Loader";
 
 const Container = styled("div")`
+    padding: 20px;
     display: flex;
     flex-direction: column;
 `;
