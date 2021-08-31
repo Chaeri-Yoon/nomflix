@@ -12,9 +12,7 @@ const useSubmitForm = (history, pathname) => {
         if(!(event.target[0].value === ""))    history.push(`/search/${event.target[0].value}`)
     }
 
-    const keywordOnForm = () => {
-        if(!(keyword == ""))    form.current[0].value = keyword;
-    }
+    const keywordOnForm = () => form.current[0].value = keyword;
 
     useEffect(() => {
         if(form.current){
