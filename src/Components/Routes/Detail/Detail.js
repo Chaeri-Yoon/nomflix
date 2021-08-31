@@ -25,7 +25,7 @@ const Backdrop = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
     filter: blur(3px);
-    opacity: 0.3;
+    opacity: 0.2;
     z-index: 0;
 `;
 const Content = styled.div`

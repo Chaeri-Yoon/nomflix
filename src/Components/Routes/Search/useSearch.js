@@ -1,25 +1,25 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { moviesApi, tvApi } from "../../../api";
 
-const useSearch = () => {
+const useSearch = (id) => {
     const [movieResults, setMovieResults] = useState(null);
     const [tvResults, setTvResults] = useState(null);
     const [keyword, setKeyword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    const form = useRef();
-    const searchWithKeyword = async event => {
-        event.preventDefault();
+    (id !== keyword) && setKeyword(id);
+
+    const searchWithKeyword = async () => {
         try{
             setLoading(true);
-            setKeyword(event.target[0].value);
+
             const {
                 data: {results: movieResults}
-            } = await moviesApi.search(event.target[0].value);
+            } = await moviesApi.search(keyword);
             const {
                 data: {results: tvResults}
-            } = await tvApi.search(event.target[0].value);
+            } = await tvApi.search(keyword);
             setMovieResults(movieResults);
             setTvResults(tvResults);
         }catch(e){
@@ -29,16 +29,9 @@ const useSearch = () => {
             setLoading(false);
         }
     }
-    useEffect(() => {
-        if(form.current){
-            form.current.addEventListener("submit", searchWithKeyword);
-        }
-        return () => {
-            if(form.current){
-                form.current.removeEventListener("submit", searchWithKeyword);
-            }
-        }
-    }, [])
-    return {form, movieResults, tvResults, keyword, loading, error};
+    
+    useEffect(() => searchWithKeyword(), [keyword]);
+
+    return {movieResults, tvResults, loading, error};
 }
 export default useSearch;

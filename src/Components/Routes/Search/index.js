@@ -1,2 +1,2 @@
-import Search from "./Search";
-export default Search;
+import SearchForm from "./SearchForm";
+export default SearchForm;
