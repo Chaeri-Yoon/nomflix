@@ -18,10 +18,10 @@ const Medias = styled("div")`
     grid-gap: 25px;
 `;
 
-const Section = ({ title, children }) => (
-    <Container>
-      <Title>{title}</Title>
-      <Medias>{children}</Medias>
-    </Container>
+const Section = ({ title, children }: { title: string, children: any }) => (
+  <Container>
+    <Title>{title}</Title>
+    <Medias>{children}</Medias>
+  </Container>
 );
 export default Section;

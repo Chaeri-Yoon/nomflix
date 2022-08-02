@@ -1,5 +1,5 @@
-import useLoaderIcon from "./useLoaderIcon";
 import styled from "styled-components";
+import useLoaderIcon from "@libs/useLoaderIcon";
 
 const Loading = styled.span`
     font-size: 50px;

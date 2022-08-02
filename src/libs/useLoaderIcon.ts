@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 
-let loading;
-const icons = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛", "🕜", "🕝", "🕞", "🕟", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦", "🕧", ];
+let loading: NodeJS.Timer | null = null;
+const icons = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛", "🕜", "🕝", "🕞", "🕟", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦", "🕧",];
 const useLoaderIcon = () => {
     const [iconIndex, setIconIndex] = useState(0);
     const [icon, setIcon] = useState(icons[0]);
 
     const changeIndex = () => {
         setIconIndex(iconIndex => iconIndex + 1);
-    } 
+    }
     const changeIcon = () => {
-        if(iconIndex === (icons.length - 1))    setIconIndex(0);
+        if (iconIndex === (icons.length - 1)) setIconIndex(0);
         setIcon(icons[iconIndex]);
     }
     const StartLoader = () => {
-        if(loading) return;
+        if (loading) return;
         loading = setInterval(changeIndex, 100);
     }
     const StopLoader = () => {
-        clearInterval(loading);
+        if (loading) clearInterval(loading);
         loading = null;
     }
     useEffect(() => {

@@ -1,11 +1,11 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
 `;
-const Image = styled.div`
+const Image = styled.div<{ bgUrl: string }>`
     height: 180px;
     border-radius: 4px;
 
@@ -43,24 +43,31 @@ const Year = styled.span`
     font-size: 10px;
     color: rgba(255,255,255,0.5);
 `;
-
-const Media = ({id, imgUrl, title, year, rating, isMovie = false}) => {
-    return(
+interface IProps {
+    id: number,
+    imgUrl: string,
+    title: string,
+    year: string,
+    rating: number,
+    isMovie?: boolean
+}
+const Media = ({ id, imgUrl, title, year, rating, isMovie = false }: IProps) => {
+    return (
         <Link to={{
             pathname: isMovie ? `/movie/${id}` : `/show/${id}`
-            }}>
+        }}>
             <Container>
                 <ImageContainer>
                     <Image bgUrl={
                         imgUrl
-                        ? `https://image.tmdb.org/t/p/w300${imgUrl}`
-                        : "https://img.icons8.com/ios/50/000000/popcorn-time.png"
-                    }/>
+                            ? `https://image.tmdb.org/t/p/w300${imgUrl}`
+                            : "https://img.icons8.com/ios/50/000000/popcorn-time.png"
+                    } />
                     <Rating>
                         {`⭐ ${rating}/10`}
                     </Rating>
                 </ImageContainer>
-                <Title>{title.length > 18 ? `${title.substring(0, 18)}...` : title}</Title>
+                <Title>{title?.length > 18 ? `${title.substring(0, 18)}...` : title}</Title>
                 <Year>{year && year.substring(0, 4)}</Year>
             </Container>
         </Link>
