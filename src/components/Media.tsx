@@ -54,7 +54,7 @@ interface IProps {
 const Media = ({ id, imgUrl, title, year, rating, isMovie = false }: IProps) => {
     return (
         <Link to={{
-            pathname: isMovie ? `/movie/${id}` : `/show/${id}`
+            pathname: isMovie ? `/movie/${id}` : `/tv/${id}`
         }}>
             <Container>
                 <ImageContainer>
