@@ -35,7 +35,7 @@ const SearchForm = () => {
                     <Input onChange={handleInputChange} placeholder="Search Movies or TV Shows..."></Input>
                 </Form>
             </Container>
-            <Results keyword={keyword} />
+            {keyword !== "" && <Results keyword={keyword} />}
         </>
     )
 }
